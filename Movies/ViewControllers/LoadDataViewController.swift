@@ -39,6 +39,7 @@ class LoadDataViewController: UIViewController {
     }
     
     func getMovieImages(){
+        movieImages.removeAll()
         let step: Float = Float(1) / Float(self.data.results.count)
         for index in 0...self.data.results.count-1{
             if let url = URL(string: self.baseUrl + data.results[index].poster_path){
