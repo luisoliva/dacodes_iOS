@@ -13,6 +13,8 @@ class MovieDetailViewController: UIViewController {
     var movieId = 0
     var movieDetails = MovieDetails()
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var movieImage: UIImageView!
     @IBOutlet weak var movieRuntime: UILabel!
     @IBOutlet weak var movieReleaseDate: UILabel!
@@ -23,6 +25,7 @@ class MovieDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.spinner.startAnimating()
         self.getMovieDataFromApi()
     }
     
@@ -40,18 +43,17 @@ class MovieDetailViewController: UIViewController {
                     self.movieDetails = try JSONDecoder().decode(MovieDetails.self, from: data!)
                     self.getMovieImage()
                 } catch let error {
-                   print(error)
+                    self.showNetworkErrorAlert()
                 }
             }
             if (error != nil){
-                print(error!)
+                self.showNetworkErrorAlert()
             }
         }
         task.resume()
     }
     
     func getMovieImage(){
-        print(baseUrlImg + movieDetails.backdrop_path)
         if let url = URL(string: baseUrlImg + movieDetails.backdrop_path){
             do {
                 let imgData = try Data(contentsOf: url)
@@ -61,7 +63,7 @@ class MovieDetailViewController: UIViewController {
                     self?.setLayoutData()
                 }
             }catch{
-                print("error")
+                self.showNetworkErrorAlert()
             }
         }
     }
@@ -77,5 +79,18 @@ class MovieDetailViewController: UIViewController {
             genres.append(" " + genre.name)
         }
         self.movieGenres.text = genres.joined(separator: ",")
+        spinner.stopAnimating()
+        loadingView.isHidden = true
+    }
+    
+    func showNetworkErrorAlert(){
+        OperationQueue.main.addOperation {
+            [weak self] in
+            let alert = UIAlertController(title: "Error de conexión", message: "Parece que no hay conexion a internet", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Intentar de nuevo", style: .default, handler: { action in
+                self?.getMovieDataFromApi()
+            }))
+            self?.present(alert, animated: true)
+        }
     }
 }

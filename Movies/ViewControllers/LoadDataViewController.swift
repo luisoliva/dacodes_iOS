@@ -16,11 +16,11 @@ class LoadDataViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.progressView.progress = 0.0
         getDataFromApi()
     }
     
     func getDataFromApi(){
+        self.progressView.progress = 0.0
         let uri = URL( string: "https://api.themoviedb.org/3/movie/now_playing?api_key=634b49e294bd1ff87914e7b9d014daed&language=es-ES&page=1")!
         let task = URLSession.shared.dataTask(with: uri){(data,response, error) in
             if (data != nil) {
@@ -28,11 +28,11 @@ class LoadDataViewController: UIViewController {
                     self.data = try JSONDecoder().decode(MoviesApiResponse.self, from: data!)
                     self.getMovieImages()
                 } catch let error {
-                   print(error)
+                    self.showNetworkErrorAlert()
                 }
             }
             if (error != nil){
-                print(error!)
+                self.showNetworkErrorAlert()
             }
         }
         task.resume()
@@ -53,7 +53,7 @@ class LoadDataViewController: UIViewController {
                         }
                     }
                 }catch{
-                    print("error")
+                    self.showNetworkErrorAlert()
                 }
             }
         }
@@ -61,10 +61,20 @@ class LoadDataViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is MainNavigationController{
-            print("voy para el navigation controller")
             let vc = segue.destination as? MainNavigationController
             vc?.data = data
             vc?.movieImages = self.movieImages
+        }
+    }
+    
+    func showNetworkErrorAlert(){
+        OperationQueue.main.addOperation {
+            [weak self] in
+            let alert = UIAlertController(title: "Error de conexión", message: "Parece que no hay conexion a internet", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Intentar de nuevo", style: .default, handler: { action in
+                self?.getDataFromApi()
+            }))
+            self?.present(alert, animated: true)
         }
     }
 

@@ -49,7 +49,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is MovieDetailViewController{
-            print("voy para el movie detail controller")
             let vc = segue.destination as? MovieDetailViewController
             vc?.movieId = self.selectedMovieId
         }

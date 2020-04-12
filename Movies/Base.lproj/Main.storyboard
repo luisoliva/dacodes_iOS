@@ -372,31 +372,50 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="SdS-Wp-dDt"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="eA6-li-aWZ"/>
                             </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIh-nX-eqX">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nZR-ma-sHk">
+                                        <rect key="frame" x="169" y="293" width="37" height="37"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="nZR-ma-sHk" firstAttribute="centerX" secondItem="UIh-nX-eqX" secondAttribute="centerX" id="0e4-g3-G9g"/>
+                                    <constraint firstItem="nZR-ma-sHk" firstAttribute="centerY" secondItem="UIh-nX-eqX" secondAttribute="centerY" id="xqG-Vy-1SB"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="LtZ-Gb-EWn" firstAttribute="trailing" secondItem="UIh-nX-eqX" secondAttribute="trailing" id="8af-rn-ghd"/>
                             <constraint firstItem="m4B-ZJ-eHc" firstAttribute="bottom" secondItem="LtZ-Gb-EWn" secondAttribute="bottom" id="AtV-pc-Ixy"/>
                             <constraint firstItem="m4B-ZJ-eHc" firstAttribute="top" secondItem="LtZ-Gb-EWn" secondAttribute="top" id="H16-1D-SjZ"/>
+                            <constraint firstItem="UIh-nX-eqX" firstAttribute="leading" secondItem="LtZ-Gb-EWn" secondAttribute="leading" id="aQ0-fD-VjD"/>
+                            <constraint firstItem="LtZ-Gb-EWn" firstAttribute="bottom" secondItem="UIh-nX-eqX" secondAttribute="bottom" id="cRZ-A7-46S"/>
                             <constraint firstItem="m4B-ZJ-eHc" firstAttribute="trailing" secondItem="LtZ-Gb-EWn" secondAttribute="trailing" id="hol-Nw-gaS"/>
                             <constraint firstItem="hHS-6d-5hE" firstAttribute="width" secondItem="1NS-gE-3sm" secondAttribute="width" id="qKc-e9-4XD"/>
+                            <constraint firstItem="UIh-nX-eqX" firstAttribute="top" secondItem="LtZ-Gb-EWn" secondAttribute="top" id="ukl-hd-Thb"/>
                             <constraint firstItem="m4B-ZJ-eHc" firstAttribute="leading" secondItem="LtZ-Gb-EWn" secondAttribute="leading" id="vi3-Zb-6QX"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LtZ-Gb-EWn"/>
                     </view>
                     <navigationItem key="navigationItem" title="Detalles" id="9QO-KO-fWq"/>
                     <connections>
+                        <outlet property="loadingView" destination="UIh-nX-eqX" id="TCz-I5-EJV"/>
                         <outlet property="movieDescription" destination="zur-QF-lAX" id="MVU-Yu-fVk"/>
                         <outlet property="movieGenres" destination="IXB-Ht-XNQ" id="72Q-YI-ijd"/>
                         <outlet property="movieImage" destination="GuZ-sD-hnH" id="EhV-uw-Uoc"/>
                         <outlet property="movieName" destination="EN3-yW-xfk" id="1pO-9K-3jq"/>
                         <outlet property="movieReleaseDate" destination="kSS-8O-Bxx" id="nyR-ch-v9h"/>
                         <outlet property="movieRuntime" destination="gbO-O5-foJ" id="A47-ka-awS"/>
+                        <outlet property="spinner" destination="nZR-ma-sHk" id="26Z-Wb-NdW"/>
                         <outlet property="voteAverage" destination="4Sy-NA-OMd" id="G1G-2d-a1w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fe9-8C-CWh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="990" y="372"/>
+            <point key="canvasLocation" x="989.60000000000002" y="371.96401799100454"/>
         </scene>
     </scenes>
     <resources>

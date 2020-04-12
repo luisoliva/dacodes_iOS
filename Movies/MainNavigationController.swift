@@ -20,7 +20,6 @@ class MainNavigationController: UINavigationController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is MoviesViewController{
-            print("voy para el movies controller")
             let vc = segue.destination as? MoviesViewController
             vc?.movies = data
             vc?.movieImages = self.movieImages
