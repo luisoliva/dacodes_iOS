@@ -12,12 +12,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     @IBOutlet weak var collectionView: UICollectionView!
     
     var movies = MoviesApiResponse()
-    let baseUri = "https://image.tmdb.org/t/p/w342"
-
+    var movieImages = [UIImage]()
+    var selectedMovieId = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setCellLayout()
-        // Do any additional setup after loading the view.
     }
     
     func setCellLayout(){
@@ -38,26 +38,20 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         cell.movieTitle.text = movies.results[indexPath.row].title
         cell.releaseDate.text = movies.results[indexPath.row].release_date
         cell.voteAverage.text = String(format:"%.1f", movies.results[indexPath.row].vote_average)
-            
-        if let url = URL(string: self.baseUri + movies.results[indexPath.row].poster_path){
-            do {
-                let imgData = try Data(contentsOf: url)
-                cell.movieWallpaper.image = UIImage(data: imgData)
-            }catch{
-                print("error")
-            }
-        }
+        cell.movieWallpaper.image = self.movieImages[indexPath.row]
         return cell
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.selectedMovieId = movies.results[indexPath.row].id
+        self.performSegue(withIdentifier: "MovieToDetailSegue", sender: self)
     }
-    */
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is MovieDetailViewController{
+            print("voy para el movie detail controller")
+            let vc = segue.destination as? MovieDetailViewController
+            vc?.movieId = self.selectedMovieId
+        }
+    }
 }

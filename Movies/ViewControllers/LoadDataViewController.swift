@@ -8,13 +8,16 @@
 import UIKit
 
 class LoadDataViewController: UIViewController {
+    @IBOutlet weak var progressView: UIProgressView!
     
     var data = MoviesApiResponse()
-    
+    var movieImages = [UIImage]()
+    let baseUrl = "https://image.tmdb.org/t/p/w342"
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.progressView.progress = 0.0
         getDataFromApi()
-        // Do any additional setup after loading the view.
     }
     
     func getDataFromApi(){
@@ -23,7 +26,7 @@ class LoadDataViewController: UIViewController {
             if (data != nil) {
                 do {
                     self.data = try JSONDecoder().decode(MoviesApiResponse.self, from: data!)
-                    print(self.data)
+                    self.getMovieImages()
                 } catch let error {
                    print(error)
                 }
@@ -35,11 +38,33 @@ class LoadDataViewController: UIViewController {
         task.resume()
     }
     
+    func getMovieImages(){
+        let step: Float = Float(1) / Float(self.data.results.count)
+        for index in 0...self.data.results.count-1{
+            if let url = URL(string: self.baseUrl + data.results[index].poster_path){
+                do {
+                    let imgData = try Data(contentsOf: url)
+                    movieImages.append(UIImage(data: imgData)!)
+                    OperationQueue.main.addOperation {
+                        [weak self] in
+                        self!.progressView.progress += step
+                        if self!.progressView.progress == 1 {
+                            self?.performSegue(withIdentifier: "LoadingToNavigationSegue", sender: self)
+                        }
+                    }
+                }catch{
+                    print("error")
+                }
+            }
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is MainNavigationController{
             print("voy para el navigation controller")
             let vc = segue.destination as? MainNavigationController
             vc?.data = data
+            vc?.movieImages = self.movieImages
         }
     }
 
